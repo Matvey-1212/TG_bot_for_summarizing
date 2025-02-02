@@ -1,0 +1,33 @@
+{
+    "models":
+    {
+        "IlyaGusev/rut5_base_sum_gazeta":
+        {
+            "model_name_path":"IlyaGusev/rut5_base_sum_gazeta",
+            "tokenizer_name": "T5TokenizerFast",
+            "model_class_name":"AutoModelForSeq2SeqLM",
+            "batch_size":8,
+            "max_input":512,
+            "tokenizer_padding":"longest",
+            "tokenizer_truncation":true,
+            "no_repeat_ngram_size":3,
+            "num_beams":3,
+            "max_new_tokens":100,
+            "task_prefix":""
+        },
+        "Kirili4ik/mbart_ruDialogSum":
+        {
+            "model_name_path":"Kirili4ik/mbart_ruDialogSum",
+            "tokenizer_name": "AutoTokenizer",
+            "model_class_name":"MBartForConditionalGeneration",
+            "batch_size":8,
+            "max_input":600,
+            "tokenizer_padding":"longest",
+            "tokenizer_truncation":true,
+            "no_repeat_ngram_size":3,
+            "num_beams":3,
+            "max_new_tokens":100,
+            "task_prefix":""
+        }
+    }
+}

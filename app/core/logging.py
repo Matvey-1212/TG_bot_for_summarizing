@@ -1,10 +1,14 @@
 import logging
 import os
+from app.core.config import config
 
 os.makedirs("logs", exist_ok=True)
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+if config.DEBUG:
+    logger.setLevel(logging.DEBUG)
+else:
+    logger.setLevel(logging.INFO)
 
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 

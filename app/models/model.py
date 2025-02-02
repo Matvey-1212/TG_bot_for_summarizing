@@ -2,22 +2,20 @@ from transformers import AutoTokenizer, T5ForConditionalGeneration
 from transformers import AutoModelForSeq2SeqLM, T5TokenizerFast
 import torch
 from app.core.config import config
-import warnings
-warnings.simplefilter(action="ignore", category=FutureWarning)
+from app.models.models_interfaces import HUG_model
+from app.core.logging import logger
+
 
 class TextModel:
-    def __init__(self, config):
-        model_name = config.MODEL_NAME
-        self.max_input = config.MAX_INPUT
-        self.batch_size = config.BATCH_SIZE
-        self.task_prefix = "" 
-        # model_name = 'UrukHan/t5-russian-summarization'
-        # self.tokenizer = T5TokenizerFast.from_pretrained(model_name)
-        # self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-        # model_name = "IlyaGusev/rut5_base_sum_gazeta"
-        self.tokenizer  = AutoTokenizer.from_pretrained(model_name, force_download=False)
-        self.model = T5ForConditionalGeneration.from_pretrained(model_name, force_download=False)
-
+    def __init__(self, name, config):
+        local_config = config.get(name, None)
+        if local_config is None:
+            logger.error(f"Cant find model name {name} in config")
+            raise Exception(f"Cant find model name {name} in config")
+        
+        self.model = HUG_model(local_config)
+        self.batch_size = local_config['batch_size']
+        
     def predict(self, texts: str):
         keys = texts.keys()
         sequences = texts.values()
@@ -34,17 +32,8 @@ class TextModel:
         
         all_summary = []
         for i in range(len(batch_input_sequences)):
-            encoded = self.tokenizer(
-                [self.task_prefix + sequence for sequence in batch_input_sequences[i]],
-                padding="longest",
-                max_length=self.max_input,
-                truncation=True,
-                return_tensors="pt",
-                )["input_ids"]
-            
-            predicts = self.model.generate(encoded, no_repeat_ngram_size=4, max_new_tokens=100) 
-            summary = self.tokenizer.batch_decode(predicts, skip_special_tokens=True) 
-            all_summary.extend(summary)
+            prediction = self.model.predict(batch_input_sequences[i])
+            all_summary.extend(prediction)
         
         summary_dict = {}
         for key, val in zip(keys, all_summary):
@@ -52,7 +41,7 @@ class TextModel:
         
         return summary_dict
 
-model = TextModel(config)
+model = TextModel(config.MODEL_NAME, config.MODELS_CONFIG)
 
 if __name__ == "__main__":
     test_text = {
