@@ -17,8 +17,8 @@ class TextModel:
         self.batch_size = local_config['batch_size']
         
     def predict(self, texts: str):
-        keys = texts.keys()
-        sequences = texts.values()
+        # keys = texts.keys()
+        sequences = texts
         
         batch_input_sequences = []
         input_sequences = []
@@ -35,18 +35,10 @@ class TextModel:
             prediction = self.model.predict(batch_input_sequences[i])
             all_summary.extend(prediction)
         
-        summary_dict = {}
-        for key, val in zip(keys, all_summary):
-            summary_dict[key] = val
+        # summary_dict = {}
+        # for key, val in zip(keys, all_summary):
+        #     summary_dict[key] = val
         
-        return summary_dict
+        return all_summary
 
 model = TextModel(config.MODEL_NAME, config.MODELS_CONFIG)
-
-if __name__ == "__main__":
-    test_text = {
-        # 'test1':"Промежуточный отчет о ходе работы должен охватывать не менее 50% работы, которая будет завершена к защите проекта. Отчет должен включать репозиторий на GitHub с вашим кодом, где ваш непрерывный прогресс должен быть явно виден (если вы участвуете в соревновании в команде, вклад всех участников должен быть явно виден через коммиты). Также необходимо предоставить краткий сопроводительный документ (например, текст или слайды с комментариями), описывающий, что вы сделали и что планируете сделать до завершения проекта. Отчет будет оцениваться в бинарной форме.",
-        # 'test2':'На этой неделе администрация Дональда Трампа предложила госслужащим федерального уровня уволиться в обмен на выплату зарплаты до конца сентября. Как сообщает The Washington Post, среди первых получателей оказались и федеральные пожарные Калифорнии, которые уже почти месяц борются с самыми масштабными лесными пожарами в истории штата.',
-        'test3':'Более 61 тысячи человек стали жертвами израильской военной операции в Секторе Газа — власти Палестины.'
-                 }
-    print(model.predict(test_text))
