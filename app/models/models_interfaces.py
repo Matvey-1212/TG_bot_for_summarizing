@@ -48,7 +48,10 @@ class HUG_model(ModelWrapper):
         
         self.task_prefix = config['task_prefix']
 
-        self.tokenizer = get_tokenizer(config['tokenizer_name']).from_pretrained(config['model_name_path'], use_fast=True)
+        self.tokenizer = get_tokenizer(config['tokenizer_name']).from_pretrained(config['model_name_path'])
+        if config['tokenizer_name'] == 'AutoTokenizer':
+            self.tokenizer.padding_side = self.config['padding_side']
+            
         self.model = get_model_class(config['model_class_name']).from_pretrained(config['model_name_path'])
         
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -60,23 +63,29 @@ class HUG_model(ModelWrapper):
         
 
     def predict(self, text: List[str]):
-        input = [self.task_prefix + sequence for sequence in text]
+        input_str = [self.task_prefix + sequence for sequence in text]
+
+        # [logger.debug(f"OUTPUT: {sequence}") for sequence in input_str]
         encoded = self.tokenizer(
-            input,
+            input_str,
             padding=self.config['tokenizer_padding'],
             max_length=self.config['max_input'],
             truncation=self.config['tokenizer_truncation'],
-            add_special_tokens=self.config.get('add_special_tokens',None), 
-            padding_side=self.config.get('padding_side', None),
+            add_special_tokens=self.config.get('add_special_tokens',True), 
+            # padding_side=self.config.get('padding_side', None),
             return_tensors="pt",
             )["input_ids"]
         encoded = encoded.to(self.device)
-        
+
         with torch.no_grad():
             predicts = self.model.generate(
                 encoded, 
+                do_sample=self.config.get('do_sample', False),
+                num_beams=self.config['num_beams'],
                 no_repeat_ngram_size=self.config['no_repeat_ngram_size'],
-                max_new_tokens=self.config['max_new_tokens']
+                max_new_tokens=self.config['max_new_tokens'],
+                early_stopping=self.config['early_stopping'],
+                top_k=self.config.get('top_k', None)
                 ) 
         summary = self.tokenizer.batch_decode(predicts, skip_special_tokens=True) 
         return summary
