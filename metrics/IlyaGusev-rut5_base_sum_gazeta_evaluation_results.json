@@ -1,15 +1,15 @@
 {
     "model_name": "IlyaGusev/rut5_base_sum_gazeta",
     "rouge": {
-        "rouge1": 0.1256667543953197,
-        "rouge2": 0.048300967648347654,
-        "rougeL": 0.12153612301905631,
-        "rougeLsum": 0.12246937730403379
+        "rouge1": 0.09671306723785301,
+        "rouge2": 0.030215341138584338,
+        "rougeL": 0.09507089905651717,
+        "rougeLsum": 0.09561475742626294
     },
     "bertscore": {
-        "precision": 0.7692103147968765,
-        "recall": 0.6846047632916029,
-        "f1": 0.7237424575543219,
-        "hashcode": "bert-base-multilingual-cased_L9_no-idf_version=0.3.12(hug_trans=4.47.1)"
+        "precision": 0.741128487873447,
+        "recall": 0.6597470077433327,
+        "f1": 0.6975294446298318,
+        "hashcode": "bert-base-multilingual-cased_L9_no-idf_version=0.3.12(hug_trans=4.42.0)"
     }
 }
