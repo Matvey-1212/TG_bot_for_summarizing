@@ -1,4 +1,6 @@
-from transformers import AutoTokenizer, T5ForConditionalGeneration
+from functools import lru_cache
+from tqdm import tqdm
+from transformers import AutoTokenizer, T5ForConditionalGeneration, AutoModelForCausalLM
 from transformers import AutoModelForSeq2SeqLM, T5TokenizerFast
 import torch
 from app.core.config import config
@@ -16,7 +18,7 @@ class TextModel:
         self.model = HUG_model(local_config)
         self.batch_size = local_config['batch_size']
         
-    def predict(self, texts: str):
+    def predict(self, texts: str, show_progress: bool = False):
         # keys = texts.keys()
         sequences = texts
         
@@ -31,9 +33,15 @@ class TextModel:
         batch_input_sequences.append(input_sequences)   
         
         all_summary = []
-        for i in range(len(batch_input_sequences)):
+        iterator = range(len(batch_input_sequences))
+        if show_progress:
+            iterator = tqdm(iterator, desc="Processing batches", unit="batch")
+        
+        for i in iterator:
             prediction = self.model.predict(batch_input_sequences[i])
             all_summary.extend(prediction)
+        
+        return all_summary
         
         # summary_dict = {}
         # for key, val in zip(keys, all_summary):
@@ -41,4 +49,8 @@ class TextModel:
         
         return all_summary
 
-model = TextModel(config.MODEL_NAME, config.MODELS_CONFIG)
+# model = TextModel(config.MODEL_NAME, config.MODELS_CONFIG)
+@lru_cache(maxsize=1)
+def get_model():
+    model = TextModel(config.MODEL_NAME, config.MODELS_CONFIG)
+    return model

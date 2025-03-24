@@ -5,8 +5,9 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 
 from app.core.logging import logger
 
+import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from transformers import T5ForConditionalGeneration, T5Tokenizer, T5TokenizerFast
+from transformers import T5ForConditionalGeneration, T5Tokenizer, T5TokenizerFast, AutoModelForCausalLM
 from transformers import MBartForConditionalGeneration, MBartTokenizer
 
 def get_tokenizer(name):
@@ -25,6 +26,10 @@ def get_model_class(name):
         return AutoModelForSeq2SeqLM
     elif name == 'MBartForConditionalGeneration':
         return MBartForConditionalGeneration
+    elif name == 'T5ForConditionalGeneration':
+        return T5ForConditionalGeneration
+    elif name == 'AutoModelForCausalLM':
+        return AutoModelForCausalLM
     else:
         logger.error(f"Cant find suitable model class type for {name}")
         raise Exception(f"Cant find suitable model class type for {name}")
@@ -42,8 +47,15 @@ class HUG_model(ModelWrapper):
         logger.debug(f'{self.config}')
         
         self.task_prefix = config['task_prefix']
-        self.tokenizer = get_tokenizer(config['tokenizer_name']).from_pretrained(config['model_name_path'])
+
+        self.tokenizer = get_tokenizer(config['tokenizer_name']).from_pretrained(config['model_name_path'], use_fast=True)
         self.model = get_model_class(config['model_class_name']).from_pretrained(config['model_name_path'])
+        
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        logger.debug(f"Using device: {self.device}")
+        self.model.to(self.device)
+        if self.device.type == "cuda":
+            self.model.half()
         self.model.eval()
         
 
@@ -54,10 +66,18 @@ class HUG_model(ModelWrapper):
             padding=self.config['tokenizer_padding'],
             max_length=self.config['max_input'],
             truncation=self.config['tokenizer_truncation'],
+            add_special_tokens=self.config.get('add_special_tokens',None), 
+            padding_side=self.config.get('padding_side', None),
             return_tensors="pt",
             )["input_ids"]
+        encoded = encoded.to(self.device)
         
-        predicts = self.model.generate(encoded, no_repeat_ngram_size=self.config['no_repeat_ngram_size'], max_new_tokens=self.config['max_new_tokens']) 
+        with torch.no_grad():
+            predicts = self.model.generate(
+                encoded, 
+                no_repeat_ngram_size=self.config['no_repeat_ngram_size'],
+                max_new_tokens=self.config['max_new_tokens']
+                ) 
         summary = self.tokenizer.batch_decode(predicts, skip_special_tokens=True) 
         return summary
         

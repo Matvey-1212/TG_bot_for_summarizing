@@ -1,0 +1,15 @@
+{
+    "model_name": "IlyaGusev/rut5_base_sum_gazeta",
+    "rouge": {
+        "rouge1": 0.1256667543953197,
+        "rouge2": 0.048300967648347654,
+        "rougeL": 0.12153612301905631,
+        "rougeLsum": 0.12246937730403379
+    },
+    "bertscore": {
+        "precision": 0.7692103147968765,
+        "recall": 0.6846047632916029,
+        "f1": 0.7237424575543219,
+        "hashcode": "bert-base-multilingual-cased_L9_no-idf_version=0.3.12(hug_trans=4.47.1)"
+    }
+}

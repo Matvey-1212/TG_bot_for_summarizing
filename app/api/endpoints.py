@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import List
-from app.models.model import model
+# from app.models.model import model
+from app.models.model import get_model
 from app.core.logging import logger
 
 class ModelInput(BaseModel):
@@ -14,7 +15,7 @@ class ModelOutput(ModelInput):
 router = APIRouter()
 
 @router.post("/predict/", response_model=List[ModelOutput])
-async def predict(input_data: List[ModelInput]):
+async def predict(input_data: List[ModelInput], model = Depends(get_model)):
     
     input = []
     for item in input_data:
