@@ -1,0 +1,107 @@
+{
+    "models":
+    {
+        "IlyaGusev/rut5_base_sum_gazeta":
+        {
+            "model_name_path":"IlyaGusev/rut5_base_sum_gazeta",
+            "tokenizer_name": "T5TokenizerFast",
+            "model_class_name":"AutoModelForSeq2SeqLM",
+            "batch_size":16,
+            "max_input":512,
+            "tokenizer_padding":"longest",
+            "tokenizer_truncation":true,
+            "no_repeat_ngram_size":3,
+            "num_beams":3,
+            "max_new_tokens":200,
+            "task_prefix":""
+        },
+        "sarahai/ruT5-base-summarizer":
+        {
+            "model_name_path":"sarahai/ruT5-base-summarizer",
+            "tokenizer_name": "T5TokenizerFast",
+            "model_class_name":"T5ForConditionalGeneration",
+            "batch_size":16,
+            "max_input":512,
+            "tokenizer_padding":"longest",
+            "tokenizer_truncation":true,
+            "no_repeat_ngram_size":3,
+            "num_beams":3,
+            "max_new_tokens":200,
+            "task_prefix":""
+        },
+        "Kirili4ik/mbart_ruDialogSum":
+        {
+            "model_name_path":"Kirili4ik/mbart_ruDialogSum",
+            "tokenizer_name": "AutoTokenizer",
+            "model_class_name":"MBartForConditionalGeneration",
+            "batch_size":4,
+            "max_input":600,
+            "tokenizer_padding":"longest",
+            "tokenizer_truncation":true,
+            "no_repeat_ngram_size":3,
+            "num_beams":3,
+            "max_new_tokens":200,
+            "task_prefix":""
+        },
+        "mtvA/mbart_ruDialogSum":
+        {
+            "model_name_path":"mtvA/mbart_ruDialogSum",
+            "tokenizer_name": "AutoTokenizer",
+            "model_class_name":"MBartForConditionalGeneration",
+            "batch_size":4,
+            "max_input":600,
+            "tokenizer_padding":"longest",
+            "tokenizer_truncation":true,
+            "no_repeat_ngram_size":3,
+            "num_beams":3,
+            "max_new_tokens":200,
+            "task_prefix":""
+        },
+        "IlyaGusev/mbart_ru_sum_gazeta":
+        {
+            "model_name_path":"IlyaGusev/mbart_ru_sum_gazeta",
+            "tokenizer_name": "MBartTokenizer",
+            "model_class_name":"MBartForConditionalGeneration",
+            "batch_size":4,
+            "max_input":600,
+            "tokenizer_padding":"longest",
+            "tokenizer_truncation":true,
+            "no_repeat_ngram_size":4,
+            "num_beams":null,
+            "max_new_tokens":null,
+            "task_prefix":""
+        },
+        "IlyaGusev/rugpt3medium_sum_gazeta":
+        {
+            "model_name_path":"IlyaGusev/rugpt3medium_sum_gazeta",
+            "tokenizer_name": "AutoTokenizer",
+            "model_class_name":"AutoModelForCausalLM",
+            "batch_size":4,
+            "max_input":600,
+            "tokenizer_padding":"longest",
+            "padding_side":"left",
+            "tokenizer_truncation":true,
+            "add_special_tokens":false,
+            "no_repeat_ngram_size":4,
+            "num_beams":null,
+            "max_new_tokens":null,
+            "task_prefix":""
+        },
+        "mtvA/rugpt3medium_sum":
+        {
+            "model_name_path":"mtvA/rugpt3medium_sum",
+            "tokenizer_name": "AutoTokenizer",
+            "model_class_name":"AutoModelForCausalLM",
+            "batch_size":4,
+            "max_input":600,
+            "tokenizer_padding":"longest",
+            "padding_side":"left",
+            "tokenizer_truncation":true,
+            "add_special_tokens":false,
+            "no_repeat_ngram_size":2,
+            "num_beams":null,
+            "max_new_tokens":null,
+            "task_prefix":"Сократи текст: "
+        }
+    }
+}
