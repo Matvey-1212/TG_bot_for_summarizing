@@ -41,7 +41,10 @@ class TextModel:
         batch_input_sequences.append(input_sequences)   
         
         all_summary = []
+<<<<<<< HEAD
         all_classes = []
+=======
+>>>>>>> main
         iterator = range(len(batch_input_sequences))
         if show_progress:
             iterator = tqdm(iterator, desc="Processing batches", unit="batch")
@@ -56,10 +59,25 @@ class TextModel:
             else:
                 all_classes.extend([None] * len(prediction))
         
+<<<<<<< HEAD
         return all_summary, all_classes
+=======
+        return all_summary
+        
+        # summary_dict = {}
+        # for key, val in zip(keys, all_summary):
+        #     summary_dict[key] = val
+>>>>>>> main
         
 
+<<<<<<< HEAD
 @lru_cache(maxsize=1)
 def get_model():
     model = TextModel(config.MODEL_NAME, config.CLASSIFICATION_MODEL_NAME, config.MODELS_CONFIG, config.NEWS_CLASS_DECODER, config.USE_CLASSIFIER)
+=======
+# model = TextModel(config.MODEL_NAME, config.MODELS_CONFIG)
+@lru_cache(maxsize=1)
+def get_model():
+    model = TextModel(config.MODEL_NAME, config.MODELS_CONFIG)
+>>>>>>> main
     return model

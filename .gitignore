@@ -1,7 +1,10 @@
 /scripts/onnx_model/
 /weights/
+<<<<<<< HEAD
 /data/
 .env
+=======
+>>>>>>> main
 
 __pycache__/
 *.pyc

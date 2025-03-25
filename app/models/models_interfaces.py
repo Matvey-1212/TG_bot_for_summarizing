@@ -48,7 +48,11 @@ class HUG_model(ModelWrapper):
         
         self.task_prefix = config['task_prefix']
 
+<<<<<<< HEAD
         self.tokenizer = get_tokenizer(config['tokenizer_name']).from_pretrained(config['model_name_path'], use_fast=True)
+=======
+        self.tokenizer = get_tokenizer(config['tokenizer_name']).from_pretrained(config['model_name_path'])
+>>>>>>> main
         if config['tokenizer_name'] == 'AutoTokenizer':
             self.tokenizer.padding_side = self.config['padding_side']
             
