@@ -3,7 +3,7 @@
 ## Overview
 This branch implements a simple Machine Learning API using FastAPI. The primary goal is to enable model inference using Hugging Face models with an easy-to-use interface.
 
-#mtv Task:
+# mtv Tasks:
 ### 1 part
 1. A basic ML API implemented with FastAPI.
 2. Model inference using Hugging Face models.
