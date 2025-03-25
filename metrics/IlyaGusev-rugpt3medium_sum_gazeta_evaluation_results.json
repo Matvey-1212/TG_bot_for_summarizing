@@ -1,0 +1,15 @@
+{
+    "model_name": "IlyaGusev/rugpt3medium_sum_gazeta",
+    "rouge": {
+        "rouge1": 0.21931878043014996,
+        "rouge2": 0.12531303237118568,
+        "rougeL": 0.20461834401736162,
+        "rougeLsum": 0.21287988108572148
+    },
+    "bertscore": {
+        "precision": 0.6777432601350223,
+        "recall": 0.7871562748454338,
+        "f1": 0.7274593161058056,
+        "hashcode": "bert-base-multilingual-cased_L9_no-idf_version=0.3.12(hug_trans=4.47.1)"
+    }
+}

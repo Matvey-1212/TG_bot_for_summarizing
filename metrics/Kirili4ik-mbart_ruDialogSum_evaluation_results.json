@@ -1,0 +1,15 @@
+{
+    "model_name": "Kirili4ik/mbart_ruDialogSum",
+    "rouge": {
+        "rouge1": 0.14400956322396263,
+        "rouge2": 0.042205959940364614,
+        "rougeL": 0.13938937369527127,
+        "rougeLsum": 0.13988437380803997
+    },
+    "bertscore": {
+        "precision": 0.757385452819425,
+        "recall": 0.6644036872673404,
+        "f1": 0.7069628243298494,
+        "hashcode": "bert-base-multilingual-cased_L9_no-idf_version=0.3.12(hug_trans=4.42.0)"
+    }
+}
