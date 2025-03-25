@@ -3,7 +3,13 @@
     {
         "data-silence/any-news-classifier":
         {
-            "model_name_path":"data-silence/any-news-classifier"
+            "model_name_path":"data-silence/any-news-classifier",
+            "use_decoder":true
+        },
+        "dragonwingsLi/classification_model":
+        {
+            "model_name_path":"dragonwingsLi/classification_model",
+            "use_decoder":false
         }
     },
     "models":

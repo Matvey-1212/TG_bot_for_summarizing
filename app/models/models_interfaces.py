@@ -110,6 +110,9 @@ class HUG_pipeline_model_classification(ModelWrapper):
     def predict(self, text: List[str]):
         with torch.no_grad():
             result = self.model(text)
-            category = [self.class_decoder[result[i]['label']] for i in range(len(result))]
+            if self.config ['use_decoder']:
+                category = [self.class_decoder[result[i]['label']] for i in range(len(result))]
+            else:
+                category = [result[i]['label'] for i in range(len(result))]
         return category
         
