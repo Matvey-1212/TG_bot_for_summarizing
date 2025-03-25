@@ -1,5 +1,7 @@
 /scripts/onnx_model/
 /weights/
+/data/
+.env
 
 __pycache__/
 *.pyc
@@ -25,4 +27,4 @@ venv/
 pip-log.txt
 pip-delete-this-directory.txt
 
-logs/
+logs/.env

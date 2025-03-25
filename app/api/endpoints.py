@@ -11,6 +11,7 @@ class ModelInput(BaseModel):
 
 class ModelOutput(ModelInput):
     summary: str
+    sum_class: str
 
 router = APIRouter()
 
@@ -22,13 +23,14 @@ async def predict(input_data: List[ModelInput], model = Depends(get_model)):
         input_list.append(item.text)
         logger.debug(f"INPUT_{i}: {item.text}")
     
-    prediction = model.predict(input_list)
+    prediction, class_prediction = model.predict(input_list)
     
     
     output = []
-    for i, text in enumerate(prediction):
+    for i, (text, text_class) in enumerate(zip(prediction, class_prediction)):
         logger.debug(f"OUTPUT_{i}: {text}")
-        output.append(ModelOutput(news_id=input_data[i].news_id, text=input_data[i].text, summary=text))
+        logger.debug(f"OUTPUT_{i}: {text_class}")
+        output.append(ModelOutput(news_id=input_data[i].news_id, text=input_data[i].text, summary=text, sum_class=text_class))
     
     
     return output

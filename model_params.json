@@ -1,4 +1,11 @@
 {
+    "classifier":
+    {
+        "data-silence/any-news-classifier":
+        {
+            "model_name_path":"data-silence/any-news-classifier"
+        }
+    },
     "models":
     {
         "IlyaGusev/rut5_base_sum_gazeta":

@@ -22,3 +22,4 @@ def test_predict():
     assert "news_id" in json_response[0]
     assert "text" in json_response[0]
     assert "summary" in json_response[0]
+    assert "sum_class" in json_response[0]
