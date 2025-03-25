@@ -3,14 +3,15 @@
 ## Overview
 This branch implements a simple Machine Learning API using FastAPI. The primary goal is to enable model inference using Hugging Face models with an easy-to-use interface.
 
-## 1 step
+#mtv Task:
+### 1 part
 1. A basic ML API implemented with FastAPI.
 2. Model inference using Hugging Face models.
 3. A wrapper around the models for better usability.
 4. Logging and configuration setup.
 5. The baseline model is Mbart, fine-tuned on Russian news for text summarization.
 
-## 2 step
+### 2 part
 1. finetune Mistral7b (**colab - too long, kuggle - can't start training, hpc - v100 doesn't support 4-8bit quantization**)
 2. finetune mBart/GPT2
 3. collect metrics
