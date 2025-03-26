@@ -37,7 +37,7 @@ async def predict(input_data: List[ModelInput], model = Depends(get_model)):
                                   text=input_data[i].text, 
                                   summary=text, 
                                   sum_class=text_class,
-                                  fake_news_prob=str(fake_news_prob)
+                                  fake_news_prob=str(f'{fake_news_prob:.2f}')
                                   ))
     
     
