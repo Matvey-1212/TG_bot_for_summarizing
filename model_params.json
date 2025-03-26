@@ -1,4 +1,11 @@
 {
+    "fake_news":
+    {
+        "tellowit/rubert-fake-news-classification":
+        {
+            "model_name_path":"tellowit/rubert-fake-news-classification"
+        }
+    },
     "classifier":
     {
         "data-silence/any-news-classifier":
@@ -123,15 +130,15 @@
             "model_class_name":"AutoModelForCausalLM",
             "batch_size":4,
             "max_input":600,
-            "tokenizer_padding":"longest",
+            "tokenizer_padding":"max_length",
             "padding_side":"left",
             "tokenizer_truncation":true,
             "add_special_tokens":false,
-            "no_repeat_ngram_size":1,
+            "no_repeat_ngram_size":4,
             "early_stopping":false,
-            "num_beams":null,
+            "num_beams":1,
             "max_new_tokens":150,
-            "task_prefix":"Сократи текст: "
+            "task_prefix":""
         }
     }
 }

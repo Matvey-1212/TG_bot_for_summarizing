@@ -17,6 +17,9 @@ class Config:
     USE_CLASSIFIER = bool(os.getenv("USE_CLASSIFIER", False))
     CLASSIFICATION_MODEL_NAME = str(os.getenv("CLASSIFICATION_MODEL_NAME", ''))
     
+    USE_FAKE_NEWS = bool(os.getenv("USE_FAKE_NEWS", False))
+    FAKE_NEWS_MODEL_NAME = str(os.getenv("FAKE_NEWS_MODEL_NAME", ''))
+    
     with open(MODEL_PARAMS_PATH, "r", encoding="utf-8") as f:
         json_data = json.load(f)
     MODELS_CONFIG = json_data

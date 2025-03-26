@@ -4,12 +4,20 @@ from transformers import AutoTokenizer, T5ForConditionalGeneration, AutoModelFor
 from transformers import AutoModelForSeq2SeqLM, T5TokenizerFast
 import torch
 from app.core.config import config
-from app.models.models_interfaces import HUG_model, HUG_pipeline_model_classification
+from app.models.models_interfaces import HUG_model, HUG_pipeline_model_classification, HUG_fake_news
 from app.core.logging import logger
 
 
 class TextModel:
-    def __init__(self, name, class_name, config, class_decoder, use_classifier):
+    def __init__(self, 
+                 name, 
+                 config,
+                 class_name=None,  
+                 class_decoder=None, 
+                 use_classifier=False,
+                 fake_news_name=None,
+                 use_fake_news=False,
+                 ):
         local_config = config['models'].get(name, None)
         if local_config is None:
             logger.error(f"Cant find model name {name} in config")
@@ -23,6 +31,14 @@ class TextModel:
             class_local_config = config['classifier'].get(class_name, None)
             if class_local_config is not None:
                 self.class_model = HUG_pipeline_model_classification(class_local_config, class_decoder)
+            else:
+                self.use_classifier = False
+             
+        self.use_fake_news = use_fake_news   
+        if self.use_fake_news:
+            class_local_config = config['fake_news'].get(fake_news_name, None)
+            if class_local_config is not None:
+                self.fake_news_model = HUG_fake_news(class_local_config)
             else:
                 self.use_classifier = False
         
@@ -42,6 +58,7 @@ class TextModel:
         
         all_summary = []
         all_classes = []
+        all_fake_news_prop = []
         iterator = range(len(batch_input_sequences))
         if show_progress:
             iterator = tqdm(iterator, desc="Processing batches", unit="batch")
@@ -54,12 +71,25 @@ class TextModel:
                 class_prediction = self.class_model.predict(prediction)
                 all_classes.extend(class_prediction)
             else:
-                all_classes.extend([None] * len(prediction))
+                all_classes.extend([0] * len(prediction))
+                
+            if self.use_fake_news:
+                fake_news_prediction = self.fake_news_model.predict(prediction)
+                all_fake_news_prop.extend(fake_news_prediction)
+            else:
+                all_fake_news_prop.extend([0] * len(batch_input_sequences[i]))
         
-        return all_summary, all_classes
+        return all_summary, all_classes, all_fake_news_prop
         
 
 @lru_cache(maxsize=1)
 def get_model():
-    model = TextModel(config.MODEL_NAME, config.CLASSIFICATION_MODEL_NAME, config.MODELS_CONFIG, config.NEWS_CLASS_DECODER, config.USE_CLASSIFIER)
+    model = TextModel(config.MODEL_NAME, 
+                      config.MODELS_CONFIG, 
+                      config.CLASSIFICATION_MODEL_NAME, 
+                      config.NEWS_CLASS_DECODER, 
+                      config.USE_CLASSIFIER,
+                      config.FAKE_NEWS_MODEL_NAME,
+                      config.USE_FAKE_NEWS
+                      )
     return model
