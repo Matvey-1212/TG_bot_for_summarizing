@@ -6,10 +6,7 @@ The scope of work I was ultimately responsible for was: 1) Collecting news data.
 
 ## 1.Collecting news data.
 
-Before the mid-term, I had collected some data sets online, but these data were often from several years ago.
-
-So I wrote a crawler to scrape news data from lenta.ru：TG\_bot\_for\_summarizing/get\_dataset  
-/catch\_daily.py.
+Before the mid-term, I collected some data sets on the Internet and wrote a crawler. After that, I perfected the crawler and used it to crawl some news data from lenta.ru：TG\_bot\_for\_summarizing/get\_dataset/catch\_daily.py.
 
 Its function is to find the news details page of the day according to the time. Then extract the description field from the news details page. Use regular expressions to find the "description" field. Save the news data to a CSV file.
 
@@ -21,11 +18,13 @@ After obtaining the news data set, we need to label the news according to our cl
 
 ## 3.Designing a classification model.
 
+BART, PEGASUS, and T5 models are good for text summarization, but not perfect for classifying Russian news. So I switched to the BERT model.
+
 I also submit my model on hugging face: https://huggingface.co/dragonwingsLi/classification_model
 
 In hugging face can see the weights
 
-Use a pre-trained natural language processing model to classify Russian news data. By loading and fine-tuning a rubert-tiny2 model based on Hugging Face, we hope to be able to classify news text. The specific tasks include training the model, evaluating the performance, saving the best model, and using the model to make predictions on actual text.
+Use a pre-trained natural language processing model to classify Russian news data. By loading and fine-tuning a rubert-tiny2 model based on Hugging Face, I hope to be able to classify news text. The specific tasks include training the model, evaluating the performance, saving the best model, and using the model to make predictions on actual text.
 
 1）Data preparation and preprocessing
 
