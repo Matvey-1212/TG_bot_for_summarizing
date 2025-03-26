@@ -1,4 +1,11 @@
 {
+    "fake_news":
+    {
+        "tellowit/rubert-fake-news-classification":
+        {
+            "model_name_path":"tellowit/rubert-fake-news-classification"
+        }
+    },
     "classifier":
     {
         "data-silence/any-news-classifier":

@@ -8,7 +8,7 @@ from app.core.logging import logger
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from transformers import T5ForConditionalGeneration, T5Tokenizer, T5TokenizerFast, AutoModelForCausalLM
-from transformers import MBartForConditionalGeneration, MBartTokenizer
+from transformers import MBartForConditionalGeneration, MBartTokenizer, BertTokenizer, BertForSequenceClassification
 from transformers import pipeline
 
 def get_tokenizer(name):
@@ -116,3 +116,41 @@ class HUG_pipeline_model_classification(ModelWrapper):
                 category = [result[i]['label'] for i in range(len(result))]
         return category
         
+class HUG_fake_news(ModelWrapper):
+    def __init__(self, config):
+        logger.debug(f"Using fake news")
+        self.config = config
+        logger.debug(f"FAKE NEWS Model: {config['model_name_path']}")
+        
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            
+        self.model = pipeline("text-classification", model=config['model_name_path'], 
+                                              device=self.device,
+                                              torch_dtype=torch.float16 if self.device == 'cuda' else torch.float32
+                                              )
+        
+        self.tokenizer = BertTokenizer.from_pretrained(config['model_name_path'])
+        self.model = BertForSequenceClassification.from_pretrained(config['model_name_path'], num_labels=2)
+        
+        self.model.to(self.device)
+        if self.device.type == "cuda":
+            self.model.half()
+        self.model.eval()
+        
+        logger.debug(f"Using device: {self.device}")
+
+    def predict(self, text: List[str]):
+        inputs = self.tokenizer(
+                    text,
+                    padding=True,
+                    truncation=True,
+                    max_length=600,
+                    return_tensors="pt"
+                )
+        
+        inputs.to(self.device)
+        with torch.no_grad():
+            outputs = self.model(**inputs)
+            logits = outputs.logits
+            probabilities = torch.softmax(logits, dim=1)[:,1]
+        return probabilities.tolist()

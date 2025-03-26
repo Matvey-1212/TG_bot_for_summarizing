@@ -74,10 +74,7 @@ def get_summary_from_model(texts, api_url=None):
 
 def update_summary(conn, table, news_id, summary, params):
     with conn.cursor() as cur:
-        json_data = [{
-            'ru_content': 0,
-            'ru_title': params
-        }]
+        
         
         query = sql.SQL("""
             UPDATE public.{table}
@@ -89,7 +86,7 @@ def update_summary(conn, table, news_id, summary, params):
         
         cur.execute(query, (
             summary, 
-            Json(json_data), 
+            Json(params), 
             news_id 
         ))
     conn.commit()
@@ -106,7 +103,10 @@ def main():
                 for res in result_sum:
                     news_id = res['news_id']
                     summary = res['summary']
-                    params = res['sum_class']
+                    params = [{
+                        'ru_content': res['fake_news_prob'],
+                        'ru_title': res['sum_class']
+                    }]
                     update_summary(conn, 
                                     table=params_config['table'], 
                                     news_id = news_id, 
