@@ -1,6 +1,6 @@
 # README
 
-After obtaining the news data set, we need to label the news according to our classification. Because this part of the work is too heavy, I borrowed AI to label it. The API provided by gigachat was used for labeling, and some corrections were made manually. The news types involving wars that AI could not handle were modified.After discussion, we adjusted the division of labor in the team.
+After discussion, we adjusted the division of labor in the team.
 
 The scope of work I was ultimately responsible for was: 1) Collecting news data. 2) Labeling news data categories. 3) Designing a classification model.
 
