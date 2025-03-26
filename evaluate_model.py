@@ -7,17 +7,20 @@ from app.core.config import config
 from app.models.model import TextModel
 
 
-model = TextModel(config.MODEL_NAME, config.MODELS_CONFIG)
-dataset = load_dataset("RussianNLP/Mixed-Summarization-Dataset")["test"]
+model = TextModel(config.MODEL_NAME, '', config.MODELS_CONFIG, config.NEWS_CLASS_DECODER, False)
+dataset = load_dataset("IlyaGusev/gazeta")["test"]
 texts = dataset["text"]
 references = dataset["summary"]
 print(f'Start inference')
-predictions = model.predict(texts, show_progress=True)
+predictions, _ = model.predict(texts, show_progress=True)
 
 print(f'Start evaluating {config.MODEL_NAME}')
 rouge = evaluate.load("rouge")
 rouge_result = rouge.compute(predictions=predictions, references=references)
 # print("rouge", rouge_result)
+
+meteor = evaluate.load("meteor")
+meteor_result = meteor.compute(predictions=predictions, references=references)
 
 bertscore = evaluate.load("bertscore")
 bertscore_result = bertscore.compute(predictions=predictions, references=references, lang="ru")
@@ -29,6 +32,7 @@ avg_f1 = sum(bertscore_result["f1"]) / len(bertscore_result["f1"])
 
 final_results = {
     "model_name": config.MODEL_NAME,
+    "meteor":meteor_result,
     "rouge": rouge_result,
     "bertscore": {
         "precision": avg_precision,

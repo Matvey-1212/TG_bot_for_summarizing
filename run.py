@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import psycopg2
 from psycopg2.extras import Json
+from psycopg2 import sql
 import requests
 import time
 
@@ -71,17 +72,26 @@ def get_summary_from_model(texts, api_url=None):
         print(f"Неожиданная ошибка: {e}")
         return None
 
-def update_summary(conn, table, news_id, summary, params): #
+def update_summary(conn, table, news_id, summary, params):
     with conn.cursor() as cur:
         json_data = [{
             'ru_content': 0,
             'ru_title': params
         }]
-        cur.execute(f"""
+        
+        query = sql.SQL("""
             UPDATE public.{table}
-            SET summary = '{summary}', params = {Json(json_data)}
-            WHERE id = {news_id};
-        """)
+            SET summary = %s, params = %s
+            WHERE id = %s;
+        """).format(
+            table=sql.Identifier(table) 
+        )
+        
+        cur.execute(query, (
+            summary, 
+            Json(json_data), 
+            news_id 
+        ))
     conn.commit()
 
 def main():
@@ -109,7 +119,8 @@ def main():
         except Exception as e:
             print(f"Ошибка: {e}")
         
-        time.sleep(3)
+        print('сон')
+        time.sleep(30)
 
 if __name__ == "__main__":
     main()

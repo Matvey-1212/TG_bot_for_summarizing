@@ -1,0 +1,12 @@
+{
+    "meteor": {
+        "meteor": 0.22945853857561224
+    },
+    "rouge": {
+        "rouge1": 0.206301323680468
+    },
+    "bertscore": {
+        "f1": 0.7155756387411539,
+        "hashcode": "bert-base-multilingual-cased_L9_no-idf_version=0.3.12(hug_trans=4.50.1)"
+    }
+}
